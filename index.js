@@ -68,5 +68,8 @@ app.get('/data/:sheetId.json',
     }
     res.json({ worksheets });
   });
- 
-app.listen(3000);
+
+const port = process.env.PORT || 3000;
+app.listen(port, function(){
+  console.log(`ExpreCSV is running on ${port}`);
+});
