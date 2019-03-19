@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const helmet = require('helmet');
 const {csvFormat} = require('d3-dsv');
