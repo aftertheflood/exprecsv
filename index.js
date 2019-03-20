@@ -4,7 +4,7 @@ const express = require('express');
 const helmet = require('helmet');
 const {csvFormat} = require('d3-dsv');
 
-const middleware = require('./middleware');
+const {lru, getSheetInfo, getWorksheet, setCache} = require('./middleware');
 const app = express();
 
 app.use(helmet());
@@ -16,9 +16,7 @@ app.get('/', (req, res)=>{
 });
 
 app.get('/data/:sheetId/:worksheetTitle.csv',
-  middleware.lru,
-  middleware.getSheetInfo,
-  middleware.getWorksheet,
+  lru, getSheetInfo, getWorksheet,
   function (req, res) {
     if(req.cacheKey){
       middleware.setCache(req.cacheKey, req.rows);
@@ -28,9 +26,7 @@ app.get('/data/:sheetId/:worksheetTitle.csv',
   });
 
 app.get('/data/:sheetId/:worksheetTitle.json',
-  middleware.lru,
-  middleware.getSheetInfo, 
-  middleware.getWorksheet,
+  lru, getSheetInfo, getWorksheet,
   function (req, res) {
     if(req.cacheKey){
       middleware.setCache(req.cacheKey, req.rows);
@@ -39,9 +35,7 @@ app.get('/data/:sheetId/:worksheetTitle.json',
   });
 
 app.get('/data/:sheetId/dictionary/:worksheetTitle-by-:key.json',
-  middleware.lru,
-  middleware.getSheetInfo, 
-  middleware.getWorksheet,
+  lru, getSheetInfo, getWorksheet,
   function (req, res) {
     const dictionary = req.rows.reduce((acc, current)=>{
       acc[current[req.params.key]] = current;
@@ -49,27 +43,26 @@ app.get('/data/:sheetId/dictionary/:worksheetTitle-by-:key.json',
     },{});
 
     if(req.cacheKey){
-      middleware.setCache(req.cacheKey, dictionary);
+      setCache(req.cacheKey, dictionary);
     }
     res.json(dictionary);
   });
 
 app.get('/data/:sheetId.json',
-  middleware.lru,
-  middleware.getSheetInfo, 
-  middleware.getWorksheetList,
+  lru, getSheetInfo, getWorksheetList,
   function (req, res) {
     const worksheets = req.worksheets.map(title => ({
       title,
       json:`/data/${req.sheetId}/${title}.json`,
       csv:`/data/${req.sheetId}/${title}.csv`,
-      dict:`/data/${req.sheetId}/dict/${title}.json`
+      dict:`/data/${req.sheetId}/dictionary/${title}-by-[column].json`
     })); 
     if(req.cacheKey){
-      middleware.setCache(req.cacheKey, { worksheets });
+      setCache(req.cacheKey, { worksheets });
     }
     res.json({ worksheets });
   });
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, function(){
