@@ -38,7 +38,10 @@ app.get('/data/:sheetId/dictionary/:worksheetTitle-by-:key.json',
   lru, getSheetInfo, getWorksheet,
   function (req, res) {
     const dictionary = req.rows.reduce((acc, current)=>{
-      acc[current[req.params.key]] = current;
+      if(!acc[current[req.params.key]]){
+        acc[current[req.params.key]] = [];
+      }
+      acc[current[req.params.key]].push(current);
       return acc;
     },{});
 
