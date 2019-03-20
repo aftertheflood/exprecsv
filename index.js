@@ -3,7 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const {csvFormat} = require('d3-dsv');
-const {lru, getSheetInfo, getWorksheet, setCache} = require('./middleware');
+const {lru, getSheetInfo, getWorksheet, getWorksheetList, setCache} = require('./middleware');
 
 const app = express();
 
