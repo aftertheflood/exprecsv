@@ -3,8 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const helmet = require('helmet');
 const {csvFormat} = require('d3-dsv');
-
 const {lru, getSheetInfo, getWorksheet, setCache} = require('./middleware');
+
 const app = express();
 
 app.use(helmet());
@@ -19,7 +19,7 @@ app.get('/data/:sheetId/:worksheetTitle.csv',
   lru, getSheetInfo, getWorksheet,
   function (req, res) {
     if(req.cacheKey){
-      middleware.setCache(req.cacheKey, req.rows);
+      setCache(req.cacheKey, req.rows);
     }
     res.setHeader('Content-Type', 'text/csv');
     res.send(csvFormat(req.rows));
@@ -29,7 +29,7 @@ app.get('/data/:sheetId/:worksheetTitle.json',
   lru, getSheetInfo, getWorksheet,
   function (req, res) {
     if(req.cacheKey){
-      middleware.setCache(req.cacheKey, req.rows);
+      setCache(req.cacheKey, req.rows);
     }
     res.json(req.rows);
   });
