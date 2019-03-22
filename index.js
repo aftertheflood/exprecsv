@@ -22,6 +22,7 @@ app.get('/data/:sheetId/:worksheetTitle.csv',
       setCache(req.cacheKey, req.rows);
     }
     res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `inline;filename="${req.worksheetTitle}.csv"`)
     res.send(csvFormat(req.rows));
   });
 
@@ -66,6 +67,21 @@ app.get('/data/:sheetId.json',
     res.json({ worksheets });
   });
 
+app.use(function(err, req, res, next) {
+  console.error('ERROR handler', err.message); // Log error message in our server's console
+  res.status(500)
+    .json({
+      status: 500,
+      err: err.message
+    }); // All HTTP requests must have a response, so let's send back an error with its status code and message
+});
+
+app.use(function (req, res, next) {
+  res.status(404).json({
+    status:404, 
+    message:`Sorry! Couldn\'t find ${req.originalUrl}`
+  });
+});
 
 const port = process.env.PORT || 3000;
 app.listen(port, function(){

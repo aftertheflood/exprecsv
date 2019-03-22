@@ -34,7 +34,6 @@ module.exports = {
     
     const cached = cache.get(req.cacheKey);
     if(cached){
-      console.log('cached');
       if(fileFormat(req.originalUrl) === 'csv'){
         res.setHeader('Content-Type', 'text/csv');
         res.send(csvFormat(req.rows));
@@ -42,7 +41,6 @@ module.exports = {
         res.json(cached);
       }
     }else{
-      console.log('not cached');
       next();
     }
   },
@@ -54,31 +52,46 @@ module.exports = {
   },
   getWorksheetList: (req, res, next)=>{ 
     req.sheet.getInfo((err, info) => {
-      req.worksheets = info.worksheets.map(d=>d.title);
-      next();
+      if (err) {
+        console.log('ERR getWorksheetList'); 
+        next(err); // Pass errors to Express. 
+      }else{
+        req.worksheets = info.worksheets.map(d=>d.title);
+        next();
+      }
     });
   },
   getWorksheet: (req, res, next) => {
     req.sheet.getInfo((err, info) => {
-      //only include spreadsheets which we have marked 'data'
-      req.worksheets = info.worksheets
-        .filter(worksheet=>(worksheet.title === req.worksheetTitle));
+      if (err) {
+        console.log('ERR getInfo');
+        next(err); // Pass errors to Express.
+      }else{
+        req.worksheets = info.worksheets
+          .filter(worksheet=>(worksheet.title === req.worksheetTitle));
 
-      if(req.worksheets.length>0) {
-        req.worksheets[0].getRows({}, (err, rows)=>{
-          const keys = Object.keys(rows[0]) // filter our the standard row keys
-            .filter(k => !( k==='_xml' || k==='id' || k==='_links' || k==='save' || k==='del'));
+        if(req.worksheets.length>0) {
+          req.worksheets[0].getRows({}, (err, rows)=>{
+            if (err) { 
+              console.log('ERR getRows');
+              next(err);// Pass errors to Express. 
+            }else{
+              const keys = Object.keys(rows[0]) // filter our the standard row keys
+                .filter(k => !( k==='_xml' || k==='id' || k==='_links' || k==='save' || k==='del'));
 
-          req.rows = rows.map(row=>{
-            const strippedRow = {}
-            keys.forEach(d=>{ strippedRow[d] = row[d]; })
-            return strippedRow;
-          });
+              req.rows = rows.map(row=>{
+                const strippedRow = {}
+                keys.forEach(d=>{ strippedRow[d] = row[d]; })
+                return strippedRow;
+              });
+              next();
+            }
+          })
+        } else {
           next();
-        })
-      } else {
-        next();
-      }
+        }
+      } 
+
     });
   }
 };
