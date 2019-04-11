@@ -11,7 +11,7 @@ const creds = {
 const cache = new LRU({ 
   max: 500,
   length:  (n, key) => (n * 2 + key.length),
-  dispose: (key, n) => { n.close(); },
+  dispose: (key, n) => { n="" },
   maxAge: 1000 * 60 * 60 
 });
 
