@@ -2,14 +2,16 @@ require('dotenv').config();
 
 const express = require('express');
 const helmet = require('helmet');
+const cors = require('cors')
 const {csvFormat} = require('d3-dsv');
 const {lru, getSheetInfo, getWorksheet, getWorksheetList, setCache} = require('./middleware');
 
 const app = express();
 
 app.use(helmet());
+app.use(cors());
 
-const config={ sitename: 'ExpreCSV' };
+const config={ sitename: 'ExpreCSV (CORS enabled)' };
 
 app.get('/', (req, res)=>{
   res.json(`${config.sitename}`);
