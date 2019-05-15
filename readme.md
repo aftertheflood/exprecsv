@@ -28,7 +28,7 @@ Column names in the spreadsheets can't be _id_
 
 https://github.com/theoephraim/node-google-spreadsheet
 
-If you are using heroku or another environment where you cannot save a local file, you may just pass in an object with
+If you are using Heroku or another environment where you cannot save a local file, you may just pass in an object with
  
  client_email -- your service account's email address
  private_key -- the private key found in the JSON file
