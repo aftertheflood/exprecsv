@@ -8,6 +8,8 @@ I wanted a way to quickly prototype data driven applications without needing to 
 
 ## Routes
 
+Once the app is up and running and ha access to some google sheets then the following routes exists.
+
   __[DOMAIN]/data/:sheetId.json__
   A summary of available sheets for a given Google doc specified by _:sheetId_
 
@@ -20,11 +22,13 @@ I wanted a way to quickly prototype data driven applications without needing to 
   __[DOMAIN]/data/:sheetId/dictionary/:worksheetTitle-by-:key.json__
   A JSON object where the property defined by _:key_ can be used to look up records
  
-## google sheet restrictions
+---
+
+## Google sheet restrictions
 
 Column names in the spreadsheets can't be _id_
 
-## google-spreadsheet authentiction
+## Google-spreadsheet authentiction
 
 https://github.com/theoephraim/node-google-spreadsheet
 
