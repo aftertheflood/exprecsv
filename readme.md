@@ -21,6 +21,9 @@ Once the app is up and running and ha access to some google sheets then the foll
 
   __[DOMAIN]/data/:sheetId/dictionary/:worksheetTitle-by-:key.json__
   A JSON object where the property defined by _:key_ can be used to look up records
+
+  __[DOMAIN]/data/:sheetId/find/:key=:value-in-:worksheetTitle.json__
+  A JSON array of rows in the worksheet where the _:key_ column is equal to a specified _:value_ can be used for simple filtering
  
 ---
 
