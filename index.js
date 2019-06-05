@@ -54,7 +54,7 @@ app.get('/data/:sheetId/dictionary/:worksheetTitle-by-:key.json',
     res.json(dictionary);
   });
 
-app.get('/data/:sheetId/find/:key-:value-in-:worksheetTitle.json',
+app.get('/data/:sheetId/find/:key=:value-in-:worksheetTitle.json',
   lru, getSheetInfo, getWorksheet,
   function (req, res) {
     const found = req.rows.filter( row=>(row[req.params.key] == decodeURI(req.params.value)) );
