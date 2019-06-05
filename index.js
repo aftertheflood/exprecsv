@@ -54,14 +54,29 @@ app.get('/data/:sheetId/dictionary/:worksheetTitle-by-:key.json',
     res.json(dictionary);
   });
 
+app.get('/data/:sheetId/find/:key-:value-in-:worksheetTitle.json',
+  lru, getSheetInfo, getWorksheet,
+  function (req, res) {
+    const found = req.rows.filter( row=>(row[req.params.key] == decodeURI(req.params.value)) );
+
+    if(req.cacheKey){
+      setCache(req.cacheKey, found);
+    }
+    res.json(found);
+  });
+
 app.get('/data/:sheetId.json',
   lru, getSheetInfo, getWorksheetList,
   function (req, res) {
+    const host = req.get('host');
+    console.log(req.secure, req.path)
+    const protocol = req.secure ? 'https://' : 'http://'
     const worksheets = req.worksheets.map(title => ({
       title,
-      json:`/data/${req.sheetId}/${title}.json`,
-      csv:`/data/${req.sheetId}/${title}.csv`,
-      dict:`/data/${req.sheetId}/dictionary/${title}-by-[column].json`
+      json: `${protocol}${host}/data/${req.sheetId}/${title}.json`,
+      csv: `${protocol}${host}/data/${req.sheetId}/${title}.csv`,
+      dict: `${protocol}${host}/data/${req.sheetId}/dictionary/${title}-by-[column].json`,
+      find: `${protocol}${host}/data/${req.sheetId}/find/[column]-[value]-in-${title}.json`
     })); 
     if(req.cacheKey){
       setCache(req.cacheKey, { worksheets });

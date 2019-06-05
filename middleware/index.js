@@ -1,11 +1,10 @@
 const GoogleSpreadsheet = require('google-spreadsheet');
 const LRU = require('lru-cache');
 const {csvFormat} = require('d3-dsv');
-//const credsJson = require('../creds.json');
 
 const creds = {
-  client_email: process.env.SERVICE_EMAIL, //? process.env.SERVICE_EMAIL : credsJson.client_email, // 'yourserviceaccountemailhere@google.com',
-  private_key: process.env.GOOGLE_PRIVATE_KEY //? process.env.GOOGLE_PRIVATE_KEY : credsJson.private_key, // 'your long private key stuff here'
+  client_email: process.env.SERVICE_EMAIL,
+  private_key: process.env.GOOGLE_PRIVATE_KEY
 }
 
 const cache = new LRU({ 
