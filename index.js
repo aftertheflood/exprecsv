@@ -69,14 +69,13 @@ app.get('/data/:sheetId.json',
   lru, getSheetInfo, getWorksheetList,
   function (req, res) {
     const host = req.get('host');
-    console.log(req.secure, req.path)
-    const protocol = req.secure ? 'https://' : 'http://'
+    const protocol = req.protocol;
     const worksheets = req.worksheets.map(title => ({
       title,
-      json: `${protocol}${host}/data/${req.sheetId}/${title}.json`,
-      csv: `${protocol}${host}/data/${req.sheetId}/${title}.csv`,
-      dict: `${protocol}${host}/data/${req.sheetId}/dictionary/${title}-by-[column].json`,
-      find: `${protocol}${host}/data/${req.sheetId}/find/[column]-[value]-in-${title}.json`
+      json: `${protocol}://${host}/data/${req.sheetId}/${title}.json`,
+      csv: `${protocol}://${host}/data/${req.sheetId}/${title}.csv`,
+      dict: `${protocol}://${host}/data/${req.sheetId}/dictionary/${title}-by-[column].json`,
+      find: `${protocol}://${host}/data/${req.sheetId}/find/[column]-[value]-in-${title}.json`
     })); 
     if(req.cacheKey){
       setCache(req.cacheKey, { worksheets });
