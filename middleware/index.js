@@ -32,14 +32,16 @@ module.exports = {
       }).join('.');
     
     const cached = cache.get(req.cacheKey);
-    if(cached){
+    
+    if(cached && req.query.bust != process.env.BUSTER){
       if(fileFormat(req.originalUrl) === 'csv'){
         res.setHeader('Content-Type', 'text/csv');
         res.send(csvFormat(req.rows));
-      }else{
+      } else {
         res.json(cached);
       }
     }else{
+      if( req.query.bust == process.env.BUSTER ){ console.warn('BUSTED! ', req.originalUrl); }
       next();
     }
   },
