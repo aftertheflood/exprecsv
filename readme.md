@@ -1,12 +1,17 @@
 # ExpreCSV
 
-SWITCH TO GOOGLE API V4
+SWITCH TO GOOGLE API V4 
 
 An awkwardly titled server for accessing CSVs (and a few other things) from Google spreadsheets written in [NodeJS](https://nodejs.org/en/) and based on [Express](https://expressjs.com/)
 
 ### Motivation
 
 I wanted a way to quickly prototype data driven applications without needing to spend too much time upfront modeling data.
+
+### Example
+ * https://atf-exprecsv.herokuapp.com/data/1o7Qg6ElbqI1lo2rfoA_OQAro34NksZmrp_hXdSM9JIE.json
+ * https://atf-exprecsv.herokuapp.com/data/1o7Qg6ElbqI1lo2rfoA_OQAro34NksZmrp_hXdSM9JIE/data%202019.json
+ * https://atf-exprecsv.herokuapp.com/data/1o7Qg6ElbqI1lo2rfoA_OQAro34NksZmrp_hXdSM9JIE/dictionary/configuration-by-key.json
 
 ## Routes
 
