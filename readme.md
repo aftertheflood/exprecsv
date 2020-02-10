@@ -1,5 +1,7 @@
 # ExpreCSV
 
+SWITCH TO GOOGLE API V4
+
 An awkwardly titled server for accessing CSVs (and a few other things) from Google spreadsheets written in [NodeJS](https://nodejs.org/en/) and based on [Express](https://expressjs.com/)
 
 ### Motivation
