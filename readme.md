@@ -1,3 +1,6 @@
+# DON'T USE THIS. 
+This has not been and will not be updated to work with the current version of google spredsheets API
+
 # ExpreCSV
 
 An awkwardly titled server for accessing CSVs (and a few other things) from Google spreadsheets written in [NodeJS](https://nodejs.org/en/) and based on [Express](https://expressjs.com/)
